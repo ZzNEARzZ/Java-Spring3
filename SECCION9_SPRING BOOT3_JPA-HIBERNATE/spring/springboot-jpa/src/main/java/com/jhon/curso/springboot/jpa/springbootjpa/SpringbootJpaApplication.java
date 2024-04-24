@@ -2,11 +2,13 @@ package com.jhon.curso.springboot.jpa.springbootjpa;
 
 import java.util.List;
 //import java.util.Optional;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jhon.curso.springboot.jpa.springbootjpa.entities.Person;
 import com.jhon.curso.springboot.jpa.springbootjpa.repositories.PersonRepository;
@@ -25,9 +27,28 @@ public class SpringbootJpaApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 
 			//list();
-			findOne();
+			//findOne();
+			create();
 	}
 
+	@Transactional
+	public void create(){
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Ingrese el Nombre:");
+		String name  = scanner.next();
+		System.out.println("Ingrese el Apellido:");
+		String lastname = scanner.next();
+		System.out.println("Ingrese el el Lenguaje de Programacion:");
+		String programmingLanguage = scanner.next();
+		scanner.close();
+		Person person = new Person(null, name, lastname, programmingLanguage);
+		Person personNew = repository.save(person);
+		System.out.println(personNew);
+		repository.findById(personNew.getId()).ifPresent(System.out::println);
+	}
+
+	@Transactional(readOnly = true)
 	public void findOne(){
 
 		/*Person person = repository.findById(7L).orElseThrow(); // Utilizamos orElseThro para capturar y a su vez verificar si contiene datos en conclusion si no tiene captura una exception
@@ -35,16 +56,18 @@ public class SpringbootJpaApplication implements CommandLineRunner{
 		/*Person person = null;
 		Optional<Person> optionalPerson = repository.findById(6L);
 		String namePerson = optionalPerson.get().getName();
+		//if(!optionalPerson.isEmpty()){
 		if(optionalPerson.isPresent()){
 			person = optionalPerson.get(); // Con .get se captura el Objeto
 			System.out.println(person);
 		}else{
 			System.out.println("No ahi persona con Id Ingresado");
 		}*/
-		repository.findById(1L).ifPresent(System.out::println);  //Esta es otra forma de capturar e imorimir un objeto
+		repository.findByNameContaining("se").ifPresent(System.out::println);  //Esta es otra forma de capturar e imorimir un objeto
 
 	}
 
+	@Transactional(readOnly = true)
 	public void list(){
 
 		//List<Person> persons = (List<Person>) repository.findAll();
