@@ -32,10 +32,10 @@ public class SpringbootJpaApplication implements CommandLineRunner{
 			//list();
 			//findOne();
 			//create();
-			//update();
+			update();
 			//delete2();
 			//personalizeQueries2();
-			whereIn();
+			//whereIn();
 	}
 
 	@Transactional(readOnly = true)
@@ -275,7 +275,7 @@ public class SpringbootJpaApplication implements CommandLineRunner{
 		scanner.close();
 		Person person = new Person(null, name, lastname, programmingLanguage);
 		Person personNew = repository.save(person);
-		System.out.println(personNew);
+		System.out.println("Probando"+personNew);
 		repository.findById(personNew.getId()).ifPresent(System.out::println);
 	}
 
