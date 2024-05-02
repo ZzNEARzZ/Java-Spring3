@@ -21,6 +21,13 @@ public class Person {
     
     public Person() {
     }
+    
+    public Person(String name, String lastName) {
+        this.name = name;
+        this.lastName = lastName;
+    }
+
+
 
     public Person(Long id, String name, String lastName, String programmingLanguage) {
         this.id = id;
@@ -58,10 +65,6 @@ public class Person {
     public String toString() {
         return "[id=" + id + ", name=" + name + ", lastName=" + lastName + ", programmingLanguage="
                 + programmingLanguage + "]";
-    }
-
-    
-
-    
+    }    
 
 }
