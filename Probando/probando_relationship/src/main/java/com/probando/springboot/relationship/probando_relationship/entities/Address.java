@@ -1,4 +1,4 @@
-package com.jhon.curso.springboot.jpa.springbootjparelationship.entities;
+package com.probando.springboot.relationship.probando_relationship.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,16 +7,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "addresses")
+@Table(name="addresses")
 public class Address {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String street;
     private Integer number;
-    
+
     public Address() {
     }
 
@@ -73,7 +73,5 @@ public class Address {
         return true;
     }
 
-        
-
-
+    
 }

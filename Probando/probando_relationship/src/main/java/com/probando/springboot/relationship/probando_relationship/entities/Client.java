@@ -1,12 +1,10 @@
-package com.jhon.curso.springboot.jpa.springbootjparelationship.entities;
+package com.probando.springboot.relationship.probando_relationship.entities;
 
-//import java.util.ArrayList;
-import java.util.HashSet;
-//import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+//import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,38 +18,35 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "clients")
 public class Client {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    @Column(name = "lastname")
-    private String lastName;
+    private String lastname;
 
-    //Recordar list no alguanta doble left join; Entonces utilizaremos otras colecciones como "Set" que esta mas optimizado
-
-    //@JoinColumn(name = "client_id")  //El JoinColum hace referencia a un Fk ya creado en la BD siempre y cuando aya una relacion;
+    // @JoinColumn(name = "client_id")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
         name = "tbl_clientes_to_direcciones", 
         joinColumns = @JoinColumn(name= "id_cliente"),
         inverseJoinColumns = @JoinColumn(name="id_direcciones"),
         uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
-    private Set<Address> addresses;
+    private List<Address> addresses;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client") //  Muy importante es el mappedBy para definir la relacion inversa
-    private Set<Invoice> invoices;
+    @JoinColumn(name = "invoice_id")
+    private List<Invoice> invoices;
 
     public Client() {
-        addresses = new HashSet<>();
-        invoices = new HashSet<>();
+        addresses = new ArrayList<>();
+        invoices = new ArrayList<>();
     }
 
     public Client(String name, String lastname) {
         this();
         this.name = name;
-        this.lastName = lastname;
+        this.lastname = lastname;
     }
 
     public Long getId() {
@@ -70,54 +65,37 @@ public class Client {
         this.name = name;
     }
 
-    
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }    
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-    public Set<Address> getAddresses() {
+    public List<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(Set<Address> addresses) {
+    public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public Set<Invoice> getInvoices() {
+    public List<Invoice> getInvoices() {
         return invoices;
     }
 
-    public void setInvoices(Set<Invoice> invoices) {
+    public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
-    }
-
-    public Client addInvoice(Invoice invoice){ //Metodo con el cual podemos agregar bidireccionalmente; manejamos la relacion inversa en este metodo
-        invoices.add(invoice);
-        invoice.setClient(this);
-        return this;
-    }
-    public void removeInvoice(Invoice invoice) { //Metodo para Eliminar Bidireccionalmente
-        this.getInvoices().remove(invoice);
-        invoice.setClient(null);
-    }
+    }    
 
     @Override
     public String toString() {
         return "{id=" + id +
                 ", name=" + name +
-                ", lastname=" + lastName +
-                ", invoices=" + invoices +
-                ", addresses=" + addresses + 
-                "}";
+                ", lastname=" + lastname +
+                ", addresses=" + addresses + "}";
     }
-
-    
-
-
 
 
 }
