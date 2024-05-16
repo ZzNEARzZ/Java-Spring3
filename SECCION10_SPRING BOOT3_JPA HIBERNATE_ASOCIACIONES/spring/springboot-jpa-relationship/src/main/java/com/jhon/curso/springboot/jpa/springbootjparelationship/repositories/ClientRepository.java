@@ -15,7 +15,7 @@ public interface ClientRepository extends CrudRepository<Client, Long>{
     @Query("select c from Client c left join fetch c.invoices where c.id=?1")
     Optional<Client> findOneWithInvoices(Long id);
     
-    @Query("select c from Client c left join fetch c.invoices left join fetch c.addresses where c.id=?1") // Si usamos dos left join y usamos un List noos dara error es por ello que se opta por un Set
+    @Query("select c from Client c left join fetch c.invoices left join fetch c.addresses left join fetch c.clientDetails where c.id=?1") // Si usamos dos left join y usamos un List noos dara error es por ello que se opta por un Set
     Optional<Client> findOne(Long id);
 
 }

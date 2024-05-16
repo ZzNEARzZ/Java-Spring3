@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jhon.curso.springboot.jpa.springbootjparelationship.entities.Address;
 import com.jhon.curso.springboot.jpa.springbootjparelationship.entities.Client;
+import com.jhon.curso.springboot.jpa.springbootjparelationship.entities.ClientDetails;
 import com.jhon.curso.springboot.jpa.springbootjparelationship.entities.Invoice;
+import com.jhon.curso.springboot.jpa.springbootjparelationship.repositories.ClientDetailsRepository;
 import com.jhon.curso.springboot.jpa.springbootjparelationship.repositories.ClientRepository;
 import com.jhon.curso.springboot.jpa.springbootjparelationship.repositories.InvoiceRepository;
 
@@ -25,6 +27,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 
 	@Autowired
 	private InvoiceRepository invoiceRepository;
+
+	@Autowired
+	private ClientDetailsRepository clientDetailsRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
@@ -32,8 +37,39 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
-		removeInvoiceBidireccional();
+		oneToOneFindById();
 		
+	}
+
+	@Transactional
+	public void oneToOneFindById() {
+		
+		ClientDetails clientDetails = new ClientDetails(true,5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Optional<Client> clientOptinal = clientRepository.findOne(2L);
+		clientOptinal.ifPresent(client ->{
+			
+			client.setClientDetails(clientDetails);
+			clientRepository.save(client);
+	
+			System.out.println(client);
+		});
+
+	}
+
+	@Transactional
+	public void oneToOne() {
+		
+		ClientDetails clientDetails = new ClientDetails(true,5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Client client = new Client("Erba", "Pura");
+		client.setClientDetails(clientDetails);
+		clientRepository.save(client);
+
+		System.out.println(client);
+
 	}
 
 	@Transactional

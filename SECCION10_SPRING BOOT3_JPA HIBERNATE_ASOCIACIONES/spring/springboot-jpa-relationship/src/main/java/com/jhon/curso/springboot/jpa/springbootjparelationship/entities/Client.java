@@ -8,12 +8,14 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -42,6 +44,10 @@ public class Client {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client") //  Muy importante es el mappedBy para definir la relacion inversa
     private Set<Invoice> invoices;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente_detalle")
+    private ClientDetails clientDetails;
 
     public Client() {
         addresses = new HashSet<>();
@@ -105,19 +111,23 @@ public class Client {
         invoice.setClient(null);
     }
 
+    public ClientDetails getClientDetails() {
+        return clientDetails;
+    }
+
+    public void setClientDetails(ClientDetails clientDetails) {
+        this.clientDetails = clientDetails;
+    }
+
     @Override
     public String toString() {
         return "{id=" + id +
                 ", name=" + name +
                 ", lastname=" + lastName +
                 ", invoices=" + invoices +
-                ", addresses=" + addresses + 
+                ", addresses=" + addresses +
+                ", clientDetails=" + clientDetails +
                 "}";
     }
-
-    
-
-
-
 
 }
