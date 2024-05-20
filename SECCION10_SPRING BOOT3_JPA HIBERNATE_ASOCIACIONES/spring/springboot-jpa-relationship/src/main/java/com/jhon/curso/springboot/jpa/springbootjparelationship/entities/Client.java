@@ -45,8 +45,7 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client") //  Muy importante es el mappedBy para definir la relacion inversa
     private Set<Invoice> invoices;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente_detalle")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "client")    
     private ClientDetails clientDetails;
 
     public Client() {
@@ -117,6 +116,12 @@ public class Client {
 
     public void setClientDetails(ClientDetails clientDetails) {
         this.clientDetails = clientDetails;
+        clientDetails.setClient(this); //Ojo aqui se estaagregando esta operancion cuando es bidireccional una forma de optimizar codigo
+    }
+
+    public void removeClientDetails(ClientDetails clientDetails) {
+        clientDetails.setClient(null); //Ojo aqui se estaagregando esta operancion cuando es bidireccional una forma de optimizar codigo
+        this.clientDetails = null;
     }
 
     @Override
