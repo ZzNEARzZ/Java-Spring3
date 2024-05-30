@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jhon.curso.springboot.app.springbootcrud.ProductValidation;
+//import com.jhon.curso.springboot.app.springbootcrud.ProductValidation;
 import com.jhon.curso.springboot.app.springbootcrud.entities.Product;
 import com.jhon.curso.springboot.app.springbootcrud.services.ProductService;
 
@@ -36,8 +36,8 @@ public class ProductController {
         return service.findAll();
     }
 
-    @Autowired
-    private ProductValidation validation; /* Se inyecta la variable validation */
+    /*@Autowired
+    private ProductValidation validation;*/ /* Se inyecta la variable validation; y solo se inyecta cuando tenemos una clase validation personalizada*/
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable Long id){
@@ -50,7 +50,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult result){  //El @RequestBody  tomar datos del Json y lo convierte  un Objeto Producto como seria en este caso  /*BindingResult se utiliza para verificar si ahi errores de validacion */
-        validation.validate(product, result);
+        //validation.validate(product, result); /*Utilizar cuando se personaliza un error mediante una clase */
         if(result.hasFieldErrors()){
             return validation(result);
         }
@@ -59,7 +59,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody Product product, BindingResult result ,@PathVariable Long id) { /*Recordemos que el valid debe ir al costado del requestbody */
-        validation.validate(product, result);
+        //validation.validate(product, result);
         if(result.hasFieldErrors()){
             return validation(result);
         }

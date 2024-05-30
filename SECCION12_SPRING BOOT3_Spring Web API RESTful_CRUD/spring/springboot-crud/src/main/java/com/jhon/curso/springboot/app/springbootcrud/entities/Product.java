@@ -1,12 +1,15 @@
 package com.jhon.curso.springboot.app.springbootcrud.entities;
 
+import com.jhon.curso.springboot.app.springbootcrud.validation.IsExistsDb;
+import com.jhon.curso.springboot.app.springbootcrud.validation.IsRequired;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,6 +22,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @IsExistsDb
+    @IsRequired
+    private String sku;
+
     @NotEmpty(message = "{NotEmpty.product.name}")  /*Recordemos que el NotEmpty solo controla los string no esten vacion y el Not null es para Objetos */
     @Size(min=3, max = 20)
     private String name;
@@ -27,7 +34,8 @@ public class Product {
     @NotNull(message = "{NotNull.product.price}")  
     private Integer price;
 
-    @NotBlank(message = "{NotBlank.product.description}") /*NotBlank controla espacios en blanco en cambio NotEMpty no controla */
+    //@NotBlank(message = "{NotBlank.product.description}") /*NotBlank controla espacios en blanco en cambio NotEMpty no controla */
+    @IsRequired
     private String description;
 
 
@@ -55,6 +63,12 @@ public class Product {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getSku() {
+        return sku;
+    }
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     
